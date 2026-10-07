@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Classifica Film</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: #000;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           TITOLO
+           ========================= */
+
+        header {
+            text-align: center;
+            padding: 45px 20px 25px;
+        }
+
+        .nome-canale {
+            margin: 0;
+            font-size: 42px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .sottotitolo {
+            margin-top: 10px;
+            color: #aaa;
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+
+        /* =========================
+           CLASSIFICA
+           ========================= */
+
+        .classifica {
+            width: min(750px, 75%);
+            margin: 30px auto 100px;
+        }
+
+        .film {
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+
+            border-bottom: 1px solid #333;
+
+            padding: 25px 15px;
+
+            transition: transform 0.25s ease;
+        }
+
+        .film:hover {
+            transform: scale(1.02);
+        }
+
+        .posizione {
+            font-size: 42px;
+            font-weight: bold;
+            color: #777;
+            width: 75px;
+            text-align: center;
+        }
+
+        .info {
+            flex: 1;
+        }
+
+        .titolo {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .anno {
+            color: #888;
+            font-size: 15px;
+        }
+
+        .voto {
+            font-size: 28px;
+            font-weight: bold;
+            min-width: 70px;
+            text-align: right;
+        }
+
+        /* =========================
+           TENDE ROSSE
+           ========================= */
+
+        .tenda {
+            position: fixed;
+            top: 0;
+            width: 95px;
+            height: 100vh;
+
+            z-index: 1000;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+
+            transition:
+                width 0.35s ease,
+                filter 0.35s ease;
+        }
+
+        .tenda:hover {
+            width: 120px;
+            filter: brightness(1.15);
+        }
+
+        .tenda.sinistra {
+            left: 0;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    #650000 0px,
+                    #8b0000 15px,
+                    #b00000 25px,
+                    #700000 40px,
+                    #4a0000 55px
+                );
+
+            box-shadow:
+                10px 0 25px rgba(0,0,0,0.8);
+        }
+
+        .tenda.destra {
+            right: 0;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    #4a0000 0px,
+                    #700000 15px,
+                    #b00000 30px,
+                    #8b0000 45px,
+                    #650000 60px
+                );
+
+            box-shadow:
+                -10px 0 25px rgba(0,0,0,0.8);
+        }
+
+        /* Pieghe delle tende */
+
+        .tenda::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.05) 0px,
+                    rgba(255,255,255,0.05) 4px,
+                    rgba(0,0,0,0.15) 10px,
+                    rgba(0,0,0,0.3) 18px
+                );
+
+            pointer-events: none;
+        }
+
+        /* Testo sulle tende */
+
+        .tenda span {
+            position: absolute;
+
+            top: 50%;
+            transform: translateY(-50%);
+
+            writing-mode: vertical-rl;
+
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+
+            color: rgba(255,255,255,0.8);
+
+            text-shadow:
+                2px 2px 5px #000;
+        }
+
+        .tenda.sinistra span {
+            right: 12px;
+        }
+
+        .tenda.destra span {
+            left: 12px;
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 700px) {
+
+            .nome-canale {
+                font-size: 28px;
+            }
+
+            .classifica {
+                width: 68%;
+            }
+
+            .tenda {
+                width: 55px;
+            }
+
+            .tenda:hover {
+                width: 70px;
+            }
+
+            .posizione {
+                font-size: 30px;
+                width: 45px;
+            }
+
+            .titolo {
+                font-size: 18px;
+            }
+
+            .voto {
+                font-size: 22px;
+                min-width: 50px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================
+         TENDA SINISTRA
+         ========================= -->
+
+    <div class="tenda sinistra" onclick="filmPrecedente()">
+        <span>PRECEDENTE</span>
+    </div>
+
+
+    <!-- =========================
+         TENDA DESTRA
+         ========================= -->
+
+    <div class="tenda destra" onclick="filmSuccessivo()">
+        <span>SUCCESSIVO</span>
+    </div>
+
+
+    <!-- =========================
+         TITOLO DELLA PAGINA
+         ========================= -->
+
+    <header>
+
+        <h1 class="nome-canale">
+            JHULLAR
+        </h1>
+
+        <div class="sottotitolo">
+            CLASSIFICA DEI FILM RECENSITI
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         CLASSIFICA
+         ========================= -->
+
+    <main class="classifica" id="classifica">
+    </main>
+
+
+    <script>
+
+        /* ==========================================
+           QUI INSERISCI I TUOI FILM
+           ========================================== */
+
+        const film = [
+
+            {
+                titolo: "Film della serata",
+                anno: "2026",
+                voto: "9.7"
+            },
+
+            {
+                titolo: "Il secondo film",
+                anno: "2025",
+                voto: "9.2"
+            },
+
+            {
+                titolo: "Il terzo film",
+                anno: "2024",
+                voto: "8.8"
+            },
+
+            {
+                titolo: "Il quarto film",
+                anno: "2023",
+                voto: "8.1"
+            },
+
+            {
+                titolo: "Il quinto film",
+                anno: "2022",
+                voto: "7.5"
+            },
+
+            {
+                titolo: "Il sesto film",
+                anno: "2021",
+                voto: "6.9"
+            }
+
+        ];
+
+
+        /* ==========================================
+           CREA LA CLASSIFICA
+           ========================================== */
+
+        const classifica = document.getElementById("classifica");
+
+        film.forEach((f, indice) => {
+
+            const elemento = document.createElement("div");
+
+            elemento.className = "film";
+
+            elemento.id = "film-" + indice;
+
+            elemento.innerHTML = `
+
+                <div class="posizione">
+                    ${indice + 1}
+                </div>
+
+                <div class="info">
+
+                    <div class="titolo">
+                        ${f.titolo}
+                    </div>
+
+                    <div class="anno">
+                        ${f.anno}
+                    </div>
+
+                </div>
+
+                <div class="voto">
+                    ${f.voto}
+                </div>
+
+            `;
+
+            classifica.appendChild(elemento);
+
+        });
+
+
+        /* ==========================================
+           TENDA SINISTRA
+           ========================================== */
+
+        function filmPrecedente() {
+
+            const posizione =
+                window.scrollY;
+
+            const altezza =
+                window.innerHeight * 0.75;
+
+            window.scrollBy({
+                top: -altezza,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /* ==========================================
+           TENDA DESTRA
+           ========================================== */
+
+        function filmSuccessivo() {
+
+            const altezza =
+                window.innerHeight * 0.75;
+
+            window.scrollBy({
+                top: altezza,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /* ==========================================
+           FRECCE DELLA TASTIERA
+           ========================================== */
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "ArrowLeft") {
+                filmPrecedente();
+            }
+
+            if (event.key === "ArrowRight") {
+                filmSuccessivo();
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
