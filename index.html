@@ -1,445 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Classifica Film</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            background: #000;
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* =========================
-           TITOLO
-           ========================= */
-
-        header {
-            text-align: center;
-            padding: 45px 20px 25px;
-        }
-
-        .nome-canale {
-            margin: 0;
-            font-size: 42px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .sottotitolo {
-            margin-top: 10px;
-            color: #aaa;
-            font-size: 16px;
-            letter-spacing: 2px;
-        }
-
-        /* =========================
-           CLASSIFICA
-           ========================= */
-
-        .classifica {
-            width: min(750px, 75%);
-            margin: 30px auto 100px;
-        }
-
-        .film {
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            gap: 25px;
-
-            border-bottom: 1px solid #333;
-
-            padding: 25px 15px;
-
-            transition: transform 0.25s ease;
-        }
-
-        .film:hover {
-            transform: scale(1.02);
-        }
-
-        .posizione {
-            font-size: 42px;
-            font-weight: bold;
-            color: #777;
-            width: 75px;
-            text-align: center;
-        }
-
-        .info {
-            flex: 1;
-        }
-
-        .titolo {
-            font-size: 25px;
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
-
-        .anno {
-            color: #888;
-            font-size: 15px;
-        }
-
-        .voto {
-            font-size: 28px;
-            font-weight: bold;
-            min-width: 70px;
-            text-align: right;
-        }
-
-        /* =========================
-           TENDE ROSSE
-           ========================= */
-
-        .tenda {
-            position: fixed;
-            top: 0;
-            width: 95px;
-            height: 100vh;
-
-            z-index: 1000;
-
-            cursor: pointer;
-
-            display: flex;
-            align-items: center;
-
-            transition:
-                width 0.35s ease,
-                filter 0.35s ease;
-        }
-
-        .tenda:hover {
-            width: 120px;
-            filter: brightness(1.15);
-        }
-
-        .tenda.sinistra {
-            left: 0;
-
-            background:
-                repeating-linear-gradient(
-                    90deg,
-                    #650000 0px,
-                    #8b0000 15px,
-                    #b00000 25px,
-                    #700000 40px,
-                    #4a0000 55px
-                );
-
-            box-shadow:
-                10px 0 25px rgba(0,0,0,0.8);
-        }
-
-        .tenda.destra {
-            right: 0;
-
-            background:
-                repeating-linear-gradient(
-                    90deg,
-                    #4a0000 0px,
-                    #700000 15px,
-                    #b00000 30px,
-                    #8b0000 45px,
-                    #650000 60px
-                );
-
-            box-shadow:
-                -10px 0 25px rgba(0,0,0,0.8);
-        }
-
-        /* Pieghe delle tende */
-
-        .tenda::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-
-            background:
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(255,255,255,0.05) 0px,
-                    rgba(255,255,255,0.05) 4px,
-                    rgba(0,0,0,0.15) 10px,
-                    rgba(0,0,0,0.3) 18px
-                );
-
-            pointer-events: none;
-        }
-
-        /* Testo sulle tende */
-
-        .tenda span {
-            position: absolute;
-
-            top: 50%;
-            transform: translateY(-50%);
-
-            writing-mode: vertical-rl;
-
-            font-size: 13px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-
-            color: rgba(255,255,255,0.8);
-
-            text-shadow:
-                2px 2px 5px #000;
-        }
-
-        .tenda.sinistra span {
-            right: 12px;
-        }
-
-        .tenda.destra span {
-            left: 12px;
-            transform: translateY(-50%) rotate(180deg);
-        }
-
-        /* =========================
-           RESPONSIVE
-           ========================= */
-
-        @media (max-width: 700px) {
-
-            .nome-canale {
-                font-size: 28px;
-            }
-
-            .classifica {
-                width: 68%;
-            }
-
-            .tenda {
-                width: 55px;
-            }
-
-            .tenda:hover {
-                width: 70px;
-            }
-
-            .posizione {
-                font-size: 30px;
-                width: 45px;
-            }
-
-            .titolo {
-                font-size: 18px;
-            }
-
-            .voto {
-                font-size: 22px;
-                min-width: 50px;
-            }
-        }
-    </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100708"><meta name="description" content="La classifica ufficiale dei film recensiti da Jhullar Review: cinque criteri, una media, un archivio in continua evoluzione.">
+<title>La Classifica | Jhullar Review</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root{color-scheme:dark;--red:#ba2831;--gold:#dfb981;--muted:#aa9896;--line:#493034;--panel:#1a1013}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:#f5ece7;background:radial-gradient(ellipse at 50% 0%,#421419 0%,#1b0b0f 35%,#090608 82%);font-family:'DM Sans',Arial,sans-serif;overflow-x:hidden}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.2;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");z-index:2}.curtain{position:fixed;top:0;bottom:0;width:clamp(22px,7vw,105px);z-index:5;background:repeating-linear-gradient(90deg,#370407 0,#8f1018 13%,#bc2530 23%,#57070c 38%,#270306 52%,#9e1720 70%,#3e0509 100%);box-shadow:inset 0 0 20px #150102,0 0 25px #000b;transition:width .3s;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#e9c9ad}.curtain:hover{width:clamp(32px,9vw,125px)}.curtain.left{left:0;border-right:3px solid #6e3d27}.curtain.right{right:0;border-left:3px solid #6e3d27}.curtain span{writing-mode:vertical-rl;letter-spacing:.28em;font-size:10px;font-weight:700;text-shadow:0 2px 4px #000}.curtain.left span{transform:rotate(180deg)}.wrap{width:min(960px,calc(100% - clamp(80px,19vw,260px)));margin:0 auto;position:relative;z-index:3}.hero{text-align:center;padding:74px 0 44px}.eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:.32em;font-size:11px;font-weight:700}.hero h1{font:800 clamp(38px,6.5vw,76px)/1.05 'Cinzel',Georgia,serif;letter-spacing:.045em;margin:15px 0 5px;text-shadow:0 4px 30px #000}.hero h1 em{font-style:normal;color:#d83a40}.hero p{color:#c2aeaa;line-height:1.7;max-width:590px;margin:18px auto}.ornament{color:var(--gold);letter-spacing:.7em;margin-top:25px}.stats{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin:26px 0 38px}.stat{min-width:120px;text-align:center}.stat strong{font:700 26px 'Cinzel',serif;display:block;color:var(--gold)}.stat span{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:0 0 17px}.section-head h2{font:700 clamp(19px,3vw,27px) 'Cinzel',serif;margin:0}.section-head small{color:var(--muted)}.film{border:1px solid #704349;border-radius:13px;background:linear-gradient(125deg,#321419,#170e11 65%);box-shadow:0 12px 50px #0007;overflow:hidden}.film summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:20px;padding:22px}.film summary::-webkit-details-marker{display:none}.rank{font:700 40px 'Cinzel',serif;color:var(--gold);min-width:65px;text-align:center}.poster{width:74px;height:106px;object-fit:cover;background:#3c171c;border:1px solid #6d4346;border-radius:4px;flex:none}.poster-fallback{display:flex;align-items:center;justify-content:center;font:700 11px 'Cinzel',serif;text-align:center;padding:6px;color:#dfb981}.film-main{flex:1;min-width:0}.film-title{font:700 clamp(19px,3vw,27px) 'Cinzel',serif;margin:0 0 7px}.meta{color:#bda6a0;font-size:13px}.film-sub{color:var(--muted);font-size:12px;margin-top:10px}.score{text-align:right;white-space:nowrap}.score strong{font:700 clamp(27px,4vw,42px) 'Cinzel',serif;color:var(--gold)}.score small{color:var(--muted)}.expand{font-size:11px;color:#c9a9a2;margin-top:9px}.details{border-top:1px solid var(--line);padding:22px 28px 27px;background:#100b0dbd}.details p{color:#c7b4af;line-height:1.65;margin-top:0}.rating{display:grid;grid-template-columns:110px 1fr 35px;gap:12px;align-items:center;margin:13px 0;font-size:13px}.track{height:7px;background:#3d292c;border-radius:9px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#8c1b27,#e5aa78);border-radius:9px}.rating b{text-align:right;color:#f2d4ab}.link{display:inline-flex;align-items:center;gap:8px;margin-top:15px;padding:12px 17px;border-radius:6px;background:#a9232d;color:white;text-decoration:none;font-weight:700;font-size:13px}.link:hover{background:#d43a43}.pending-title{font:700 20px 'Cinzel',serif;margin:45px 0 15px}.pending{display:flex;gap:18px;align-items:center;padding:22px 24px;border:1px dashed #59363a;border-radius:10px;margin:12px 0;background:#1c1114a8}.pending .rank{font-size:26px;color:#80666a}.pending strong{font-size:15px;color:#d0b9b2}.pending p{font-size:12px;color:#8d7775;margin:5px 0 0}.pending .q{margin-left:auto;font:700 29px 'Cinzel',serif;color:#624347}footer{text-align:center;color:#8f7776;font-size:12px;line-height:1.8;padding:50px 0 75px}footer b{color:#cba67d}@media(max-width:600px){.wrap{width:calc(100% - 76px)}.hero{padding-top:49px}.hero p{font-size:13px}.curtain{width:25px}.curtain span{font-size:8px;letter-spacing:.12em}.curtain:hover{width:29px}.film summary{gap:10px;padding:13px}.rank{font-size:24px;min-width:30px}.poster{width:46px;height:70px}.film-title{font-size:16px}.meta,.film-sub{font-size:11px}.score strong{font-size:21px}.score small{font-size:10px}.expand{font-size:9px}.details{padding:16px}.rating{grid-template-columns:85px 1fr 25px;gap:6px;font-size:11px}.pending{padding:14px;gap:9px}.pending strong{font-size:12px}.pending .rank{font-size:19px}.section-head{display:block}.section-head small{display:block;margin-top:6px}.stats{gap:10px}.stat{min-width:85px}.stat strong{font-size:20px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
 </head>
-
-
 <body>
-
-    <!-- =========================
-         TENDA SINISTRA
-         ========================= -->
-
-    <div class="tenda sinistra" onclick="filmPrecedente()">
-        <span>PRECEDENTE</span>
-    </div>
-
-
-    <!-- =========================
-         TENDA DESTRA
-         ========================= -->
-
-    <div class="tenda destra" onclick="filmSuccessivo()">
-        <span>SUCCESSIVO</span>
-    </div>
-
-
-    <!-- =========================
-         TITOLO DELLA PAGINA
-         ========================= -->
-
-    <header>
-
-        <h1 class="nome-canale">
-            JHULLAR
-        </h1>
-
-        <div class="sottotitolo">
-            CLASSIFICA DEI FILM RECENSITI
-        </div>
-
-    </header>
-
-
-    <!-- =========================
-         CLASSIFICA
-         ========================= -->
-
-    <main class="classifica" id="classifica">
-    </main>
-
-
-    <script>
-
-        /* ==========================================
-           QUI INSERISCI I TUOI FILM
-           ========================================== */
-
-        const film = [
-
-            {
-                titolo: "Film della serata",
-                anno: "2026",
-                voto: "9.7"
-            },
-
-            {
-                titolo: "Il secondo film",
-                anno: "2025",
-                voto: "9.2"
-            },
-
-            {
-                titolo: "Il terzo film",
-                anno: "2024",
-                voto: "8.8"
-            },
-
-            {
-                titolo: "Il quarto film",
-                anno: "2023",
-                voto: "8.1"
-            },
-
-            {
-                titolo: "Il quinto film",
-                anno: "2022",
-                voto: "7.5"
-            },
-
-            {
-                titolo: "Il sesto film",
-                anno: "2021",
-                voto: "6.9"
-            }
-
-        ];
-
-
-        /* ==========================================
-           CREA LA CLASSIFICA
-           ========================================== */
-
-        const classifica = document.getElementById("classifica");
-
-        film.forEach((f, indice) => {
-
-            const elemento = document.createElement("div");
-
-            elemento.className = "film";
-
-            elemento.id = "film-" + indice;
-
-            elemento.innerHTML = `
-
-                <div class="posizione">
-                    ${indice + 1}
-                </div>
-
-                <div class="info">
-
-                    <div class="titolo">
-                        ${f.titolo}
-                    </div>
-
-                    <div class="anno">
-                        ${f.anno}
-                    </div>
-
-                </div>
-
-                <div class="voto">
-                    ${f.voto}
-                </div>
-
-            `;
-
-            classifica.appendChild(elemento);
-
-        });
-
-
-        /* ==========================================
-           TENDA SINISTRA
-           ========================================== */
-
-        function filmPrecedente() {
-
-            const posizione =
-                window.scrollY;
-
-            const altezza =
-                window.innerHeight * 0.75;
-
-            window.scrollBy({
-                top: -altezza,
-                behavior: "smooth"
-            });
-
-        }
-
-
-        /* ==========================================
-           TENDA DESTRA
-           ========================================== */
-
-        function filmSuccessivo() {
-
-            const altezza =
-                window.innerHeight * 0.75;
-
-            window.scrollBy({
-                top: altezza,
-                behavior: "smooth"
-            });
-
-        }
-
-
-        /* ==========================================
-           FRECCE DELLA TASTIERA
-           ========================================== */
-
-        document.addEventListener("keydown", function(event) {
-
-            if (event.key === "ArrowLeft") {
-                filmPrecedente();
-            }
-
-            if (event.key === "ArrowRight") {
-                filmSuccessivo();
-            }
-
-        });
-
-    </script>
-
-</body>
-</html>
+<a class="curtain left" href="#top" aria-label="Torna all'inizio"><span>JHULLAR REVIEW</span></a>
+<a class="curtain right" href="#archivio" aria-label="Vai alla classifica"><span>LA CLASSIFICA</span></a>
+<div class="wrap" id="top"><header class="hero"><div class="eyebrow">Il sipario si apre sul cinema</div><h1>JHULLAR <em>REVIEW</em></h1><div class="ornament">✦ ◆ ✦</div><p>Ogni film ha una storia. Ogni storia lascia un segno.<br>Benvenuti nell'archivio ufficiale delle nostre recensioni.</p><div class="stats"><div class="stat"><strong id="count">1</strong><span>Film recensiti</span></div><div class="stat"><strong>5</strong><span>Criteri di giudizio</span></div><div class="stat"><strong id="best">8,5</strong><span>Voto più alto</span></div></div></header>
+<main id="archivio"><div class="section-head"><h2>La classifica ufficiale</h2><small>Ordinata per media decrescente</small></div><div id="ranking"></div><h3 class="pending-title">Prossimamente sul palco</h3><div id="pending"></div></main><footer><b>JHULLAR REVIEW</b> · Il cinema, senza filtri.<br>I voti riflettono un giudizio critico personale. Archivio in continuo aggiornamento.</footer></div>
+<script>
+/* ========================================================
+   AGGIUNGI QUI I FILM FUTURI. I VOTI SONO NUMERI (CON PUNTO).
+   Il sito calcola automaticamente la media e la posizione.
+   locandina: percorso di una tua immagine autorizzata (opzionale)
+   youtube: link della recensione pubblica (opzionale)
+   ======================================================== */
+const films = [
+  {
+    titolo:'Calvaire', anno:2004, regista:'Fabrice du Welz',
+    voti:{Scrittura:8.2,Personaggi:8.0,Regia:8.5,Malessere:8.8,Identità:9.0},
+    descrizione:'Un viaggio nell’ossessione, nella solitudine e nella follia. Il primo film recensito su Jhullar Review.',
+    locandina:'',
+    youtube:'https://youtu.be/HI2rBn8IJgE'
+  }
+];
+const postiInAttesa=5;
+const format=n=>n.toFixed(1).replace('.',',');
+const media=f=>Object.values(f.voti).reduce((a,b)=>a+b,0)/Object.values(f.voti).length;
+const ordinati=[...films].sort((a,b)=>media(b)-media(a)||a.titolo.localeCompare(b.titolo,'it'));
+const root=document.getElementById('ranking');
+function node(tag,cls,txt){const el=document.createElement(tag);if(cls)el.className=cls;if(txt!==undefined)el.textContent=txt;return el}
+ordinati.forEach((f,i)=>{
+ const card=node('details','film');card.style.marginBottom='12px';
+ const summary=node('summary');summary.setAttribute('aria-label',`Apri i voti di ${f.titolo}`);
+ summary.append(node('div','rank',String(i+1).padStart(2,'0')));
+ if(f.locandina){const img=node('img','poster');img.src=f.locandina;img.alt=`Locandina di ${f.titolo}`;img.loading='lazy';summary.append(img)}
+ else summary.append(node('div','poster poster-fallback','JHULLAR REVIEW'));
+ const main=node('div','film-main');main.append(node('h3','film-title',f.titolo),node('div','meta',`${f.anno} · ${f.regista}`),node('div','film-sub','Apri la scheda e scopri i cinque voti'));summary.append(main);
+ const score=node('div','score');score.append(node('strong','',format(media(f))));score.append(node('div','expand','VOTI ▾'));summary.append(score);card.append(summary);
+ const detail=node('div','details');detail.append(node('p','',f.descrizione));
+ Object.entries(f.voti).forEach(([k,v])=>{const r=node('div','rating');r.append(node('span','',k));const track=node('div','track');const fill=node('div','fill');fill.style.width=`${Math.max(0,Math.min(100,v*10))}%`;track.append(fill);r.append(track,node('b','',format(v)));detail.append(r)});
+ if(f.youtube){const a=node('a','link','▶ Guarda la recensione');a.href=f.youtube;a.target='_blank';a.rel='noopener noreferrer';detail.append(a)}
+ card.append(detail);root.append(card)
+});
+const pending=document.getElementById('pending');for(let i=0;i<postiInAttesa;i++){const el=node('div','pending');el.append(node('div','rank',String(ordinati.length+i+1).padStart(2,'0')));const info=node('div');info.append(node('strong','',''));info.firstChild.textContent='In attesa della prossima recensione';info.append(node('p','',''));info.lastChild.textContent='Il prossimo film deve ancora salire sul palco.';el.append(info,node('div','q','?'));pending.append(el)}
+document.getElementById('count').textContent=ordinati.length;
+document.getElementById('best').textContent=ordinati.length?format(media(ordinati[0])):'—';
+</script>
+</body></html>
